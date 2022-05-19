@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment'
 import ReactAgendaItem from './reactAgendaItem';
 import classNames from 'classnames';
-import {guid, getUnique, getLast, getFirst , mapItems} from './helpers.js';
+import { guid, getUnique, getLast, getFirst, mapItems } from './helpers.js';
 import * as DragDropHelper from './dragAndDropHelper.js';
 
 var startSelect
@@ -25,14 +25,14 @@ var DEFAULT_ITEM = {
 
 
 
-    var mouse = {
-        x: 0,
-        y: 0,
-        startX: 0,
-        startY: 0
-    };
-    var element = null;
-    var helper = null;
+var mouse = {
+  x: 0,
+  y: 0,
+  startX: 0,
+  startY: 0
+};
+var element = null;
+var helper = null;
 
 
 export default class ReactAgenda extends Component {
@@ -44,9 +44,9 @@ export default class ReactAgenda extends Component {
       items: {},
       itemOverlayStyles: {},
       highlightedCells: [],
-      numberOfDays:4,
-      autoScaleNumber:0,
-      focusedCell: null
+      numberOfDays: 4,
+      autoScaleNumber: 0,
+      focusedCell: null,
     };
     this.handleBeforeUpdate = this.handleBeforeUpdate.bind(this);
     this.handleOnNextButtonClick = this.handleOnNextButtonClick.bind(this);
@@ -76,11 +76,11 @@ export default class ReactAgenda extends Component {
   /********************/
   componentWillMount() {
     this.handleBeforeUpdate(this.props);
-    if(this.props.autoScale){
+    if (this.props.autoScale) {
       window.removeEventListener("resize", this.updateDimensions);
 
     }
-    if(this.props.locale && this.props.locale != "en" ){
+    if (this.props.locale && this.props.locale != "en") {
       moment.locale(this.props.locale);
     }
 
@@ -94,7 +94,7 @@ export default class ReactAgenda extends Component {
   componentDidMount() {
 
 
-    if(this.props.autoScale){
+    if (this.props.autoScale) {
       window.addEventListener("resize", this.updateDimensions);
       this.updateDimensions();
 
@@ -104,8 +104,8 @@ export default class ReactAgenda extends Component {
   }
 
   updateDimensions() {
-    var width = Math.round((document.getElementById('agenda-wrapper').offsetWidth / 150 ) - 1)
-    this.setState({autoScaleNumber:width , numberOfDays:width})
+    var width = Math.round((document.getElementById('agenda-wrapper').offsetWidth / 150) - 1)
+    this.setState({ autoScaleNumber: width, numberOfDays: width })
   }
 
   /********************/
@@ -123,14 +123,14 @@ export default class ReactAgenda extends Component {
     var rows = [];
     var interval = (60 / this.props.rowsPerHour);
 
-    if(this.props.startAtTime && typeof this.props.startAtTime === "number" ){
-         for (var i = 0; i < 24 * this.props.rowsPerHour; i++) {
-          if(this.props.endAtTime != 0 && (this.props.endAtTime - this.props.startAtTime) * this.props.rowsPerHour  >=  i ){
-           rows.push(moment(this.state.date).hours(this.props.startAtTime).minutes(0).seconds(0).milliseconds(0).add(Math.floor(i * interval), 'minutes'));
-          }
+    if (this.props.startAtTime && typeof this.props.startAtTime === "number") {
+      for (var i = 0; i < 24 * this.props.rowsPerHour; i++) {
+        if (this.props.endAtTime != 0 && (this.props.endAtTime - this.props.startAtTime) * this.props.rowsPerHour >= i) {
+          rows.push(moment(this.state.date).hours(this.props.startAtTime).minutes(0).seconds(0).milliseconds(0).add(Math.floor(i * interval), 'minutes'));
+        }
 
-    }
-    return rows;
+      }
+      return rows;
 
     }
 
@@ -173,7 +173,7 @@ export default class ReactAgenda extends Component {
 
 
     if (props.hasOwnProperty('numberOfDays') && props.numberOfDays !== this.state.numberOfDays && !this.props.autoScale) {
-      this.setState({numberOfDays: props.numberOfDays});
+      this.setState({ numberOfDays: props.numberOfDays });
     }
 
     if (props.hasOwnProperty('minDate') && (!this.state.hasOwnProperty('minDate') || props.minDate !== this.state.minDate.toDate())) {
@@ -199,7 +199,7 @@ export default class ReactAgenda extends Component {
     var newEnd = moment(newStart).add(this.state.numberOfDays - 1, 'days');
 
     if (nextStartDate !== this.state.date) {
-      this.setState({date: nextStartDate});
+      this.setState({ date: nextStartDate });
     }
 
     if (this.props.onDateRangeChange) {
@@ -217,7 +217,7 @@ export default class ReactAgenda extends Component {
     var newEnd = moment(newStart).add(this.state.numberOfDays - 1, 'days');
 
     if (prevStartDate !== this.state.date) {
-      this.setState({date: prevStartDate});
+      this.setState({ date: prevStartDate });
     }
 
     if (this.props.onDateRangeChange) {
@@ -234,55 +234,55 @@ export default class ReactAgenda extends Component {
       var now = new Date();
       var newdate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), old + 1, 0)
       var mom = newdate.toISOString().substring(0, newdate.toISOString().length - 5)
-    if(this.props.onCellSelect) {
+      if (this.props.onCellSelect) {
         return this.props.onCellSelect(mom, bypass);
       }
-      }
-      if(this.props.onCellSelect) {
-        this.props.onCellSelect(cell, bypass);
-      }
+    }
+    if (this.props.onCellSelect) {
+      this.props.onCellSelect(cell, bypass);
+    }
 
   }
 
 
   setMousePosition(e) {
-        var ev = e || window.event; //Moz || IE
+    var ev = e || window.event; //Moz || IE
 
-        mouse.x = ev.pageX;
-        mouse.y = ev.pageY;
+    mouse.x = ev.pageX;
+    mouse.y = ev.pageY;
 
-    };
+  };
 
 
   handleMouseOver(e) {
-     this.setMousePosition(e)
+    this.setMousePosition(e)
     if (e.buttons === 0) {
       return false;
     }
     e.preventDefault
       ? e.preventDefault()
       : e.returnValue = false
- this.removeSelection()
-    if(element){
-        element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
-            element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
-            element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
-            element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
+    this.removeSelection()
+    if (element) {
+      element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
+      element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
+      element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
+      element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
 
 
-     }
+    }
 
-     if(helper){
-             helper.style.left = mouse.x  + 'px';
-            helper.style.top = (mouse.y ) + 'px';
-            if(e.target.classList.contains("agenda__cell") && !e.target.classList.contains("--time")){
-                var strt =  moment(startSelect)
-                var endd =   moment(e.target.id)
+    if (helper) {
+      helper.style.left = mouse.x + 'px';
+      helper.style.top = (mouse.y) + 'px';
+      if (e.target.classList.contains("agenda__cell") && !e.target.classList.contains("--time")) {
+        var strt = moment(startSelect)
+        var endd = moment(e.target.id)
 
-                helper.innerHTML =endd.diff(strt) > 0? strt.format('LT') + ' -- ' + endd.format('LT'): endd.format('LT') + ' -- ' + strt.format('LT')
-            }
+        helper.innerHTML = endd.diff(strt) > 0 ? strt.format('LT') + ' -- ' + endd.format('LT') : endd.format('LT') + ' -- ' + strt.format('LT')
+      }
 
-     }
+    }
   }
 
   removeSelection() {
@@ -302,7 +302,7 @@ export default class ReactAgenda extends Component {
     isMouseDown = true;
 
     this.removeSelection()
-    if (e.target.classList.contains("--time") ||e.target.classList.contains("--time-now")  && !isDragging) {
+    if (e.target.classList.contains("--time") || e.target.classList.contains("--time-now") && !isDragging) {
 
       return this.handleMouseClick(e.target)
     }
@@ -315,20 +315,20 @@ export default class ReactAgenda extends Component {
         return false;
       }
       this.handleMouseClick(e.target.id)
-        mouse.startX = mouse.x;
-            mouse.startY = mouse.y;
-            element = document.createElement('div');
-             element.className = 'rectangle'
-            element.style.left = mouse.x + 'px';
-            element.style.top = mouse.y + 'px';
-            document.body.appendChild(element)
+      mouse.startX = mouse.x;
+      mouse.startY = mouse.y;
+      element = document.createElement('div');
+      element.className = 'rectangle'
+      element.style.left = mouse.x + 'px';
+      element.style.top = mouse.y + 'px';
+      document.body.appendChild(element)
 
 
-            if(this.props.helper){
-             helper = document.createElement('div');
-            helper.className = 'helper-reactangle'
-             document.body.appendChild(helper)
-            }
+      if (this.props.helper) {
+        helper = document.createElement('div');
+        helper.className = 'helper-reactangle'
+        document.body.appendChild(helper)
+      }
     }
 
 
@@ -341,28 +341,28 @@ export default class ReactAgenda extends Component {
 
     endSelect = e.target.id
 
-   var old = document.getElementsByClassName('rectangle')
-   var old2 = document.getElementsByClassName('helper-reactangle')
+    var old = document.getElementsByClassName('rectangle')
+    var old2 = document.getElementsByClassName('helper-reactangle')
 
-     for (var i = old.length - 1; i >= 0; --i) {
+    for (var i = old.length - 1; i >= 0; --i) {
       if (old[i]) {
         old[i].remove();
       }
     }
 
-       for (var i = old2.length - 1; i >= 0; --i) {
+    for (var i = old2.length - 1; i >= 0; --i) {
       if (old2[i]) {
         old2[i].remove();
       }
     }
-        element = null
-        helper = null
+    element = null
+    helper = null
 
 
     if (startSelect && endSelect && startSelect != endSelect) {
 
-      return this.getSelection(startSelect , endSelect)
-  }
+      return this.getSelection(startSelect, endSelect)
+    }
 
 
   }
@@ -394,7 +394,7 @@ export default class ReactAgenda extends Component {
   }
 
   onDragOver(e) {
-     e.preventDefault()
+    e.preventDefault()
     e.stopPropagation();
 
     if (e.target.id === draggedElement) {
@@ -428,7 +428,7 @@ export default class ReactAgenda extends Component {
   }
 
   dragEvent(id, d) {
-    if(!this.props.onChangeEvent){
+    if (!this.props.onChangeEvent) {
       return;
     }
     var date = d;
@@ -454,7 +454,7 @@ export default class ReactAgenda extends Component {
           break;
         }
       }
-        this.props.onChangeEvent(items, itm);
+      this.props.onChangeEvent(items, itm);
     }
   }
 
@@ -472,7 +472,7 @@ export default class ReactAgenda extends Component {
     if (id && date && items) {
       for (var i in items) {
         if (items[i]._id === id) {
-          itm = Object.assign({} , items[i] , {_id:guid()} );
+          itm = Object.assign({}, items[i], { _id: guid() });
           var start = moment(itm.startDateTime);
           var end = moment(itm.endDateTime);
           var duration = moment.duration(end.diff(start));
@@ -481,7 +481,7 @@ export default class ReactAgenda extends Component {
           itm.startDateTime = new Date(newdate)
           itm.endDateTime = new Date(newEnddate)
           items.push(itm)
-          if(this.props.onChangeEvent){
+          if (this.props.onChangeEvent) {
             this.props.onChangeEvent(items, itm);
           }
           break;
@@ -492,32 +492,32 @@ export default class ReactAgenda extends Component {
 
   resizeEvent(id, date) {
 
-    if(!this.props.onChangeDuration){
-        return;
+    if (!this.props.onChangeDuration) {
+      return;
     }
 
     var items = this.props.items;
     if (id && date && items) {
 
 
-      for (var i in items ) {
+      for (var i in items) {
         if (items[i]._id === id) {
           var difference = new Date(date) - new Date(items[i].startDateTime)
           if (difference < 1) {
             let strt = new Date(items[i].startDateTime)
             items[i].endDateTime = new Date(strt.getFullYear(), strt.getMonth(), strt.getDate(), strt.getHours(), strt.getMinutes() + 15, 0);
-            this.setState({items: items})
-              return this.props.onChangeDuration(items, items[i])
-          }
-            let newdate = moment(date)
-            items[i].endDateTime = new Date(newdate)
+            this.setState({ items: items })
             return this.props.onChangeDuration(items, items[i])
-            break;
           }
-
+          let newdate = moment(date)
+          items[i].endDateTime = new Date(newdate)
+          return this.props.onChangeDuration(items, items[i])
+          break;
         }
+
       }
     }
+  }
 
 
   onDragEnd(e) {
@@ -527,7 +527,7 @@ export default class ReactAgenda extends Component {
     if (ctrlKey) {
 
       this.duplicateEvent(e.target.id, newDate)
-    } else{
+    } else {
       this.dragEvent(e.target.id, newDate)
     }
     isDragging = false;
@@ -587,7 +587,7 @@ export default class ReactAgenda extends Component {
   /*  selection Handlers   */
   /************************/
 
-  getSelection(start , end) {
+  getSelection(start, end) {
 
     // var array = [];
     // var array2 = [];
@@ -604,9 +604,9 @@ export default class ReactAgenda extends Component {
     //   console.log('array' , array)
     //   this.props.onRangeSelection(array);
     // }
-   var strt =  moment(start)
-   var endd =   moment(end)
-  var arr = endd.diff(strt) >0?[start,end]:[end,start];
+    var strt = moment(start)
+    var endd = moment(end)
+    var arr = endd.diff(strt) > 0 ? [start, end] : [end, start];
 
     this.props.onRangeSelection(arr);
 
@@ -625,7 +625,7 @@ export default class ReactAgenda extends Component {
 
   removeEvent(item) {
     var items = this.props.items;
-    var newItems = items.filter(function(el) {
+    var newItems = items.filter(function (el) {
       return el._id !== item._id;
     });
     if (this.props.onItemRemove) {
@@ -635,7 +635,7 @@ export default class ReactAgenda extends Component {
 
   render() {
 
-    var renderHeaderColumns = function(col, i) {
+    var renderHeaderColumns = function (col, i) {
       var headerLabel = moment(col);
       headerLabel.locale(this.props.locale);
       return <th ref={"column-" + (i + 1)} key={"col-" + i} className="agenda__cell --head">
@@ -646,8 +646,8 @@ export default class ReactAgenda extends Component {
 
     };
 
-    var renderBodyRows = function(row, i) {
-      if (i % this.props.rowsPerHour === 0 ) {
+    var renderBodyRows = function (row, i) {
+      if (i % this.props.rowsPerHour === 0) {
         var ref = "hour-" + Math.floor(i / this.props.rowsPerHour);
         var timeLabel = moment(row);
         var differ = timeLabel.diff(timeNow, 'minutes')
@@ -655,7 +655,7 @@ export default class ReactAgenda extends Component {
         timeLabel.locale(this.props.locale);
         return (
           <tr key={"row-" + i} ref={ref} draggable={false} className="agenda__row   --hour-start">
-          <td className={differ <= 60 && differ >= 0
+            <td className={differ <= 60 && differ >= 0
               ? 'disable-select agenda__cell --time-now'
               : 'disable-select agenda__cell --time'} rowSpan={this.props.rowsPerHour}>{timeLabel.format('LT')}
             </td>
@@ -679,12 +679,13 @@ export default class ReactAgenda extends Component {
       ? this.props.itemComponent
       : ReactAgendaItem;
 
-    var renderItemCells = function(cell, i) {
+    // Render an individual item
+    var renderItemCells = function (cell, i) {
 
       var cellClasses = {
         'agenda__cell': true
       };
-      cell['item'].forEach(function(itm) {
+      cell['item'].forEach(function (itm) {
 
         cellClasses[itm.classes] = true;
 
@@ -697,48 +698,29 @@ export default class ReactAgenda extends Component {
       splt = splt.filter(i => !i.includes('agenda__cell'))
       splt = splt.filter(i => !i.includes('undefined'))
 
-      var nwsplt = []
-      splt.forEach(function(value) {
-        if (value.length > 0) {
-          nwsplt.push(Colors[value])
-        }
-      });
-
       var styles = {
         height: this.props.cellHeight + 'px'
       }
-      if (splt.length > 1) {
 
-        if (nwsplt[1] === nwsplt[2]) {
-
-          nwsplt.splice(1, 0, "rgb(255,255,255)");
-        }
-        nwsplt = nwsplt.join(' , ')
-        styles = {
-          "background": 'linear-gradient(-100deg,' + nwsplt + ')',
-          height: this.props.cellHeight + 'px'
-        }
-      }
-
-      var itemElement = cell.item.map(function(item, idx) {
+      var itemElement = cell.item.map(function (item, idx) {
 
         var last1 = getLast(item.cellRefs);
         var first1 = getFirst(item.cellRefs);
 
-        if (first1 === cell.cellRef ) {
+        if (first1 === cell.cellRef) {
 
           return <div id={item._id} ref={cell.cellRef} key={idx} className="dragDiv" onDragStart={this.onDragStart} onDragEnd={this.onDragEnd} draggable="true">
 
-            {first1 === cell.cellRef
+            {/* {first1 === cell.cellRef
               ? <i className="drag-handle-icon" aria-hidden="true"></i>
-              : ''}
+              : ''} */}
             {first1 === cell.cellRef
               ? <ItemComponent item={item}
                 parent={cell.cellRef}
-                itemColors={Colors}
-                edit={this.props.onItemEdit?this.editEvent:null}
-                remove={this.props.onItemRemove?this.removeEvent:null}
-                days={this.props.numberOfDays}/>
+                rowsPerHour={this.props.rowsPerHour}
+                edit={this.props.onItemEdit ? this.editEvent : null}
+                remove={this.props.onItemRemove ? this.removeEvent : null}
+                days={this.props.numberOfDays} />
               : ''}
 
           </div>
@@ -747,7 +729,7 @@ export default class ReactAgenda extends Component {
 
         if (last1 === cell.cellRef && this.props.onChangeDuration) {
           return <div className="handler" style={{
-            marginLeft: 8 *(idx + 1) + 'px'
+            marginLeft: 8 * (idx + 1) + 'px'
           }} id={item._id} key={item._id} onDragStart={this.onDragHandlerStart} onDragEnd={this.onDragHandlerEnd} draggable="true">
             <i className="resize-handle-icon"></i>
           </div>
@@ -767,7 +749,7 @@ export default class ReactAgenda extends Component {
 
     }.bind(this);
 
-    var renderMinuteCells = function(cell, i) {
+    var renderMinuteCells = function (cell, i) {
       if (cell.item[0] && !cell.item._id) {
         return renderItemCells(cell, i)
       }
@@ -788,7 +770,7 @@ export default class ReactAgenda extends Component {
       splt = splt.filter(i => !i.includes('agenda__cell'));
       splt = splt.filter(i => !i.includes('undefined'));
       var nwsplt = [];
-      splt.forEach(function(value) {
+      splt.forEach(function (value) {
         if (value.length > 0) {
           nwsplt.push(Colors[value]);
         }
@@ -818,25 +800,25 @@ export default class ReactAgenda extends Component {
           {first === cell.cellRef
             ? <div id={cell.item._id} ref={cell.item._id} className="dragDiv" onDragStart={this.onDragStart} onDragEnd={this.onDragEnd} draggable="true">
 
-                {first === cell.cellRef && this.props.onChangeEvent
-                  ? <i className="drag-handle-icon" aria-hidden="true"></i>
-                  : ''}
-                {first === cell.cellRef
-                  ? <ItemComponent item={cell.item}
-                    parent={cell.cellRef}
-                    itemColors={Colors}
-                    edit={this.props.onItemEdit?this.editEvent:null}
-                    remove={this.props.onItemRemove?this.removeEvent:null}
-                    days={this.props.numberOfDays}/>
-                  : ''}
+              {/* {first === cell.cellRef && this.props.onChangeEvent
+                ? <i className="drag-handle-icon" aria-hidden="true"></i>
+                : ''} */}
+              {first === cell.cellRef
+                ? <ItemComponent item={cell.item}
+                  parent={cell.cellRef}
+                  rowsPerHour={this.props.rowsPerHour}
+                  edit={this.props.onItemEdit ? this.editEvent : null}
+                  remove={this.props.onItemRemove ? this.removeEvent : null}
+                  days={this.props.numberOfDays} />
+              : ''}
 
-              </div>
+            </div>
             : ''}
 
           {last === cell.cellRef && this.props.onChangeDuration
             ? <div className="handler" id={cell.item._id} onDragStart={this.onDragHandlerStart} onDragEnd={this.onDragHandlerEnd} draggable="true">
-                <i className="resize-handle-icon"></i>
-              </div>
+              <i className="resize-handle-icon"></i>
+            </div>
 
             : ''}
 
@@ -844,7 +826,7 @@ export default class ReactAgenda extends Component {
       )
     };
 
-    var disablePrev = function(state) {
+    var disablePrev = function (state) {
       if (!state.hasOwnProperty('minDate')) {
         return false;
       }
@@ -852,7 +834,7 @@ export default class ReactAgenda extends Component {
       return state.date.toDate().getTime() === state.minDate.toDate().getTime();
     };
 
-    var disableNext = function(state) {
+    var disableNext = function (state) {
       if (!state.hasOwnProperty('maxDate')) {
         return false;
       }
@@ -862,25 +844,18 @@ export default class ReactAgenda extends Component {
 
     return (
       <div className="agenda" id="agenda-wrapper">
-        <div className="agenda__table --header">
+        { this.props.showHeader ? <div className="agenda__table --header">
           <table>
             <thead>
               <tr>
                 <th ref="column-0" className="agenda__cell --controls">
-                  <div className="agenda-controls-layout">
-                     <button className={"agenda__prev" + (disablePrev(this.state)
-                       ? " --disabled"
-                       : "")} onClick={this.handleOnPrevButtonClick}></button>
-                     <button className={"agenda__next" + (disableNext(this.state)
-                       ? " --disabled"
-                       : "")} onClick={this.handleOnNextButtonClick}></button>
-                  </div>
+                  
                 </th>
                 {this.getHeaderColumns(this.props.view).map(renderHeaderColumns, this)}
               </tr>
             </thead>
           </table>
-        </div>
+        </div> : ""}
 
         <div ref="agendaScrollContainer" className="agenda__table --body" style={{
           position: 'relative'
@@ -908,14 +883,15 @@ ReactAgenda.propTypes = {
   view: PropTypes.string,
   locale: PropTypes.string,
   items: PropTypes.array,
-  helper:PropTypes.bool,
+  helper: PropTypes.bool,
   itemComponent: PropTypes.element,
-  numberOfDays:PropTypes.number,
+  numberOfDays: PropTypes.number,
   headFormat: PropTypes.string,
   rowsPerHour: PropTypes.number,
   itemColors: PropTypes.object,
   fixedHeader: PropTypes.bool,
-  autoScaleNumber: PropTypes.bool
+  autoScaleNumber: PropTypes.bool,
+  showHeader: PropTypes.bool
 };
 
 ReactAgenda.defaultProps = {
@@ -925,11 +901,11 @@ ReactAgenda.defaultProps = {
   startAtTime: 0,
   endAtTime: 0,
   cellHeight: 15,
-  view:"agenda",
+  view: "agenda",
   locale: "en",
-  helper:true,
+  helper: true,
   items: [],
-  autoScale:false,
+  autoScale: false,
   itemComponent: ReactAgendaItem,
   numberOfDays: 4,
   headFormat: "ddd DD MMM",
@@ -940,5 +916,6 @@ ReactAgenda.defaultProps = {
     "color-3": "rgba(235, 85, 59, 1)",
     "color-4": "rgba(70, 159, 213, 1)"
   },
-  fixedHeader: true
+  fixedHeader: true,
+  showHeader: true,
 }

@@ -4,7 +4,6 @@
   --selection:rgba(102, 195, 131 , 0.7);;
 }
 
-
 .agenda__table > table {
   border-spacing: 0;
       width: 100%;
@@ -12,9 +11,6 @@
       border: none;
       -webkit-transform: translate3d(0,0,0);
 }
-
-
-
 
 .agenda__table.\--body {
     height: calc(100vh - 64px);
@@ -61,10 +57,10 @@
  **/
 
 .agenda__cell.\--time {
-  width: 100px;
+  width: 60px;
   vertical-align: middle;
   text-align: center;
-  font-size: 16px;
+  font-size: 10px;
   text-align: center;
   border-left: none !important;
   border-top: none !important;
@@ -74,9 +70,9 @@
 }
 
 .agenda__cell.\--time-now {
-  width: 100px;
+  width: 60px;
   vertical-align: middle;
-  font-size: 16px;
+  font-size: 10px;
   text-align: center;
   color: #444;
   border-left: none !important;
@@ -153,11 +149,8 @@
     text-align: center;
 }
 
-
 .agenda__cell{
-  border-left: 1px solid rgba(192,192,192,0.4);
-  border-bottom: 1px solid rgba(192,192,192,0.4);
-
+  border-bottom: 1px solid rgba(192,192,192,0.4); 
 }
 
 .agenda__cell.\--time-now {
@@ -275,16 +268,8 @@
 }
 
 @media screen and (max-width: 1024px) {
- 
-  .agenda__cell.\--time {
-      width: 60px;
-
-  }
   .agenda__cell.\--controls {
       width: 60px;
 
   }
-
-
-
 }

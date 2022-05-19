@@ -1,21 +1,21 @@
 import moment from 'moment'
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
-import {getLast, getFirst} from './helpers.js';
+import React, { Component } from 'react';
+import { getLast, getFirst } from './helpers.js';
 import './reactAgendaItem.css';
 
 export default class ReactAgendaItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      wrapper:{
+      wrapper: {
         width: '150px',
-        marginLeft: '0px',
+        height: '30px',
         zIndex: 5,
-        borderLeft: null
-
+        borderLeft: null,
+        backgroundColor: this.props.item.acceptStatus.response = 'accepted' ? 'rgba(0, 111, 207, 1)' : 'rgba(102, 169, 226, 1)',
       },
-      controls:{
+      controls: {
 
       }
 
@@ -28,27 +28,24 @@ export default class ReactAgendaItem extends Component {
   }
 
   updateDimensions() {
-var elem = document.getElementById(this.props.parent)
-if(elem){
-  var nwidh = (elem.offsetWidth / 1.4)
-  var nmrgl = this.props.padder > 0
-    ? (nwidh / 5) + this.props.padder * 8
-    : (nwidh / 5)
+    var elem = document.getElementById(this.props.parent)
+    if (elem) {
+      return this.setState({
+        wrapper: {
+          ...this.state.wrapper,
+          width: elem.offsetWidth + 'px',
+          height: elem.offsetHeight * this.props.rowsPerHour + 'px',
+          marginTop: (-elem.offsetHeight / 2) + 'px',
+          zIndex: 5,
+        }
+      })
 
-  return this.setState({wrapper:{
-    width: nwidh + 'px',
-    marginLeft: nmrgl + 'px',
-    marginTop: (this.props.padder * 8) + 'px',
-    zIndex: 5,
-  }
-  })
-
-}
+    }
 
   }
 
   componentWillReceiveProps(props, next) {
-    setTimeout(function() {
+    setTimeout(function () {
       this.updateDimensions();
     }.bind(this), 50);
 
@@ -69,7 +66,7 @@ if(elem){
     let sty = this.state.wrapper;
 
     if (sty.zIndex === 8) {
-      var newState = { wrapper: Object.assign({} , sty , {zIndex:5} ) };
+      var newState = { wrapper: Object.assign({}, sty, { zIndex: 5 }) };
       return this.setState(newState)
     }
 
@@ -79,21 +76,20 @@ if(elem){
 
     if (sty.zIndex === 5) {
 
-      var newState = { wrapper: Object.assign({} , sty , {zIndex:8} )};
+      var newState = { wrapper: Object.assign({}, sty, { zIndex: 8 }) };
       return this.setState(newState)
     }
 
   }
 
   render() {
-
     var duratH = moment.duration(this.props.item.duration._milliseconds, 'Milliseconds').humanize();
     var duratL = moment(this.props.item.startDateTime).format("HH:mm")
     var duratE = moment(this.props.item.endDateTime).format("HH:mm")
 
-    return <div style={this.state.wrapper} className="agenda-cell-item" onMouseEnter={this.raiseZindex} onMouseLeave={this.lowerZindex}>
+    return <div style={this.state.wrapper} className="agenda-cell-item" onMouseEnter={this.raiseZindex} onMouseLeave={this.lowerZindex} onClick={() => this.props.edit(this.props.item)}>
 
-              <div className="agenda-controls-item" style={this.state.controls}>
+      {/* {<div className="agenda-controls-item" style={this.state.controls}>
                {this.props.edit?
                 <div className="agenda-edit-event">
                   <a onClick={() => this.props.edit(this.props.item)} className="agenda-edit-modele">
@@ -106,14 +102,12 @@ if(elem){
                     <i className="remove-item-icon"></i>
                   </a>
                 </div>:''}
-              </div>
+              </div>} */}
 
-            <div className="agenda-item-description">
-              <section>{this.props.item.name}</section>
-            <small>
-              , {duratL} - {duratE} , {duratH}
-            </small>
-          </div>
+      <div className="agenda-item-description">
+        <p>{this.props.item.name}</p>
+        <p>{duratL} - {duratE}</p>
+      </div>
 
     </div>
 
