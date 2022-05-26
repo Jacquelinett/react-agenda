@@ -135,7 +135,7 @@ export default class ReactAgenda extends Component {
     }
 
     for (var i = 0; i < 24 * this.props.rowsPerHour; i++) {
-      rows.push(moment(this.state.date).hours(7).minutes(0).seconds(0).milliseconds(0).add(Math.floor(i * interval), 'minutes'));
+      rows.push(moment(this.state.date).hours(0).minutes(0).seconds(0).milliseconds(0).add(Math.floor(i * interval), 'minutes'));
     }
     return rows;
 
@@ -655,7 +655,7 @@ export default class ReactAgenda extends Component {
         timeLabel.locale(this.props.locale);
         return (
           <tr key={"row-" + i} ref={ref} draggable={false} className="agenda__row   --hour-start">
-            <td className={differ <= 60 && differ >= 0
+            <td className={differ <= 0 && differ >= -60
               ? 'disable-select agenda__cell --time-now'
               : 'disable-select agenda__cell --time'} rowSpan={this.props.rowsPerHour}>{timeLabel.format('LT')}
             </td>
@@ -720,7 +720,9 @@ export default class ReactAgenda extends Component {
                 rowsPerHour={this.props.rowsPerHour}
                 edit={this.props.onItemEdit ? this.editEvent : null}
                 remove={this.props.onItemRemove ? this.removeEvent : null}
-                days={this.props.numberOfDays} />
+                days={this.props.numberOfDays} 
+                index={idx}
+                count={cell['item'].length}/>
               : ''}
 
           </div>

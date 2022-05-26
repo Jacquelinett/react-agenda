@@ -228,7 +228,7 @@ padding: 8px;
 
 .agenda__cell.\--head {
   border-right: none;
-
+  font-size: 18px;
 }
 
 .agenda__table.\--header .agenda__cell {
@@ -243,7 +243,7 @@ padding: 8px;
  **/
 
 .agenda__cell.\--time {
-  width: 60px;
+  width: 64px;
   vertical-align: middle;
   text-align: center;
   font-size: 10px;
@@ -256,7 +256,7 @@ padding: 8px;
 }
 
 .agenda__cell.\--time-now {
-  width: 60px;
+  width: 64px;
   vertical-align: middle;
   font-size: 10px;
   text-align: center;
@@ -279,9 +279,9 @@ padding: 8px;
     justify-content: space-around;
 }
 .agenda__cell.\--controls {
-    width: 100px;
     border-right: none;
     border-left: none;
+    width: 68px;
 }
 
 
@@ -348,7 +348,9 @@ padding: 8px;
   background: none;
 }
 
-
+.regular {
+  background-color: white !important;
+}
 
 .agenda__cell_selected {
     background: var(--selection);

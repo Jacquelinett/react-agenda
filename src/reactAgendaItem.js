@@ -12,8 +12,9 @@ export default class ReactAgendaItem extends Component {
         width: '150px',
         height: '30px',
         zIndex: 5,
-        borderLeft: null,
-        backgroundColor: this.props.item.acceptStatus.response = 'accepted' ? 'rgba(0, 111, 207, 1)' : 'rgba(102, 169, 226, 1)',
+        border: '1px solid #006FCF',
+        backgroundColor: this.props.item.acceptStatus.response == 'accepted' ? 'rgba(0, 111, 207, 1)' : 'rgba(255, 255, 255, 1)',
+        color: this.props.item.acceptStatus.response == 'accepted' ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 111, 207, 1)',
       },
       controls: {
 
@@ -29,13 +30,17 @@ export default class ReactAgendaItem extends Component {
 
   updateDimensions() {
     var elem = document.getElementById(this.props.parent)
+    const hours = Math.abs(this.props.item.endDateTime - this.props.item.startDateTime) / 36e5;
+    const length = this.props.count ? this.props.count : 1;
     if (elem) {
+      const offset = this.props.index ? elem.offsetWidth / length * this.props.index: 0;
       return this.setState({
         wrapper: {
           ...this.state.wrapper,
-          width: elem.offsetWidth + 'px',
-          height: elem.offsetHeight * this.props.rowsPerHour + 'px',
+          width: elem.offsetWidth / length + 'px',
+          height: elem.offsetHeight * this.props.rowsPerHour * hours + 'px',
           marginTop: (-elem.offsetHeight / 2) + 'px',
+          marginLeft: offset + 'px',
           zIndex: 5,
         }
       })
