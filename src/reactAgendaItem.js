@@ -40,7 +40,7 @@ export default class ReactAgendaItem extends Component {
           width: elem.offsetWidth / length + 'px',
           height: elem.offsetHeight * this.props.rowsPerHour * hours + 'px',
           marginTop: (-elem.offsetHeight / 2) + 'px',
-          marginLeft: offset + 'px',
+          marginLeft: offset - 10 + 'px',
           zIndex: 5,
         }
       })
