@@ -7,13 +7,17 @@ import './reactAgendaItem.css';
 export default class ReactAgendaItem extends Component {
   constructor(props) {
     super(props);
+    let backgroundColor = 'rgba(255, 255, 255, 1)';
+    if (this.props.item.type == 'deadline') backgroundColor = 'rgba(253, 185, 45, 1)'
+    else if (this.props.item.acceptStatus.response == 'accepted') backgroundColor = 'rgba(0, 111, 207, 1)'
+
     this.state = {
       wrapper: {
         width: '150px',
         height: '30px',
         zIndex: 5,
         border: '1px solid #006FCF',
-        backgroundColor: this.props.item.acceptStatus.response == 'accepted' ? 'rgba(0, 111, 207, 1)' : 'rgba(255, 255, 255, 1)',
+        backgroundColor: backgroundColor,
         color: this.props.item.acceptStatus.response == 'accepted' ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 111, 207, 1)',
       },
       controls: {
@@ -40,7 +44,7 @@ export default class ReactAgendaItem extends Component {
           width: elem.offsetWidth / length + 'px',
           height: elem.offsetHeight * this.props.rowsPerHour * hours + 'px',
           marginTop: (-elem.offsetHeight / 2) + 'px',
-          marginLeft: offset + 'px',
+          marginLeft: offset - 10 + 'px',
           zIndex: 5,
         }
       })

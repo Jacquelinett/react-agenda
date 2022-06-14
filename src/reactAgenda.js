@@ -845,7 +845,7 @@ export default class ReactAgenda extends Component {
     };
 
     return (
-      <div className="agenda" id="agenda-wrapper">
+      <div className="agenda" id="agenda-wrapper" style={{ height: 'inherit' }}>
         { this.props.showHeader ? <div className="agenda__table --header">
           <table>
             <thead>
