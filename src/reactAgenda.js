@@ -860,7 +860,7 @@ export default class ReactAgenda extends Component {
         </div> : ""}
 
         <div ref="agendaScrollContainer" className="agenda__table --body" style={{
-          position: 'relative'
+          position: 'relative', height: 'inherit'
         }}>
           <table cellSpacing="0" cellPadding="0">
 

@@ -16,7 +16,7 @@ export default class ReactAgendaItem extends Component {
         width: '150px',
         height: '30px',
         zIndex: 5,
-        border: '1px solid #006FCF',
+        border: this.props.item.type == 'deadline' ? '1px solid #FDB92D' : '1px solid #006FCF',
         backgroundColor: backgroundColor,
         color: this.props.item.acceptStatus.response == 'accepted' ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 111, 207, 1)',
       },
