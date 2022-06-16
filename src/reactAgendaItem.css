@@ -20,7 +20,6 @@ height: 12px;
 
 .agenda-cell-item {
     font-size: 14px;
-    overflow: scroll;
     display: flex;
     flex-direction: column;
      padding: 0;
