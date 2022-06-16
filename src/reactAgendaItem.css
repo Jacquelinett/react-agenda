@@ -16,13 +16,11 @@ height: 12px;
   height: 12px;
 }
 
-
-
 .agenda-cell-item {
     font-size: 14px;
     display: flex;
     flex-direction: column;
-     padding: 0;
+    padding: 0;
     position: absolute;
     margin-left: -10px;
     line-height: 1.1;
