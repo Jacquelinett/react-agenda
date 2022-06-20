@@ -32,6 +32,7 @@ height: 12px;
 .agenda-item-description {
   padding: 8px;
   font-size: 10px;
+  overflow: hidden;
 }
 
 .agenda-controls-item {
