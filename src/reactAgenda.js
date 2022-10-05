@@ -666,6 +666,8 @@ export default class ReactAgenda extends Component {
         if (this.hourRefMaps[ref] == null)
           this.hourRefMaps[ref] = React.createRef();
 
+        console.log(this.hourRefMaps[ref]);
+
         timeLabel.locale(this.props.locale);
         return (
           <tr key={"row-" + i} ref={this.hourRefMaps[ref]} draggable={false} className="agenda__row   --hour-start">
@@ -724,7 +726,9 @@ export default class ReactAgenda extends Component {
         if (first1 === cell.cellRef) {
           if (this.cellRefMaps[cell.cellRef] == null)
             this.cellRefMaps[cell.cellRef] = React.createRef();
-
+          
+          console.log(this.cellRefMaps[cell.cellRef]);
+            
           return <div id={item._id} ref={this.cellRefMaps[cell.cellRef]} key={idx} className="dragDiv" onDragStart={this.onDragStart} onDragEnd={this.onDragEnd} draggable="true">
 
             {/* {first1 === cell.cellRef
@@ -759,7 +763,7 @@ export default class ReactAgenda extends Component {
 
       if (this.cellRefMaps[cell.cellRef] == null)
         this.cellRefMaps[cell.cellRef] = React.createRef();
-
+      console.log(this.cellRefMaps[cell.cellRef]);
       return (
 
         <td ref={this.cellRefMaps[cell.cellRef]} key={"cell-" + i} className={classSet} style={styles} id={cell.cellRef}>
@@ -819,6 +823,9 @@ export default class ReactAgenda extends Component {
         this.cellRefMaps[cell.cellRef] = React.createRef();
       if (this.itemIDRefMaps[cell.item._id] == null)
         this.itemIDRefMaps[cell.item._id] = React.createRef();
+      
+      console.log(this.cellRefMaps[cell.cellRef]);
+      console.log(this.itemIDRefMaps[cell.item._id]);
 
       return (
         <td ref={this.cellRefMaps[cell.cellRef]} key={"cell-" + i} className={classSet} style={styles} id={cell.cellRef}>
