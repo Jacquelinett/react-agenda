@@ -69,6 +69,13 @@ export default class ReactAgenda extends Component {
     this.duplicateEvent = this.duplicateEvent.bind(this);
     this.resizeEvent = this.resizeEvent.bind(this);
     this.updateDimensions = this.updateDimensions.bind(this);
+
+    this.agendaScrollContainer = React.createRef();
+    this.cellRefMaps = {};
+    this.columnRefMaps = {};
+    this.columnRefMaps["column-0"] = React.createRef();
+    this.itemIDRefMaps = {};
+    this.hourRefMaps = {};
   }
 
   /********************/
@@ -145,6 +152,7 @@ export default class ReactAgenda extends Component {
     var cells = [];
     for (var i = 0; i < this.state.numberOfDays; i++) {
       var cellRef = moment(rowMoment).add(i, 'days').format('YYYY-MM-DDTHH:mm:ss');
+      this.cellRefMaps[cellRef] = React.createRef();
       cells.push({
         cellRef: cellRef,
         item: this.state.items[cellRef] || DEFAULT_ITEM
@@ -638,7 +646,10 @@ export default class ReactAgenda extends Component {
     var renderHeaderColumns = function (col, i) {
       var headerLabel = moment(col);
       headerLabel.locale(this.props.locale);
-      return <th ref={"column-" + (i + 1)} key={"col-" + i} className="agenda__cell --head">
+      if (this.columnRefMaps["column-" + (i + 1)] == null) 
+        this.columnRefMaps["column-" + (i + 1)] = React.createRef();
+
+      return <th ref={this.columnRefMaps["column-" + (i + 1)]} key={"col-" + i} className="agenda__cell --head">
         {this.props.headFormat
           ? headerLabel.format(this.props.headFormat)
           : headerLabel.format('dddd DD MMM YY')}
@@ -651,6 +662,9 @@ export default class ReactAgenda extends Component {
         var ref = "hour-" + Math.floor(i / this.props.rowsPerHour);
         var timeLabel = moment(row);
         var differ = timeLabel.diff(timeNow, 'minutes')
+
+        if (this.hourRefMaps[ref] == null)
+          this.hourRefMaps[ref] = React.createRef();
 
         timeLabel.locale(this.props.locale);
         return (
@@ -708,8 +722,10 @@ export default class ReactAgenda extends Component {
         var first1 = getFirst(item.cellRefs);
 
         if (first1 === cell.cellRef) {
+          if (this.cellRefMaps[cell.cellRef] == null)
+            this.cellRefMaps[cell.cellRef] = React.createRef();
 
-          return <div id={item._id} ref={cell.cellRef} key={idx} className="dragDiv" onDragStart={this.onDragStart} onDragEnd={this.onDragEnd} draggable="true">
+          return <div id={item._id} ref={this.cellRefMaps[cell.cellRef]} key={idx} className="dragDiv" onDragStart={this.onDragStart} onDragEnd={this.onDragEnd} draggable="true">
 
             {/* {first1 === cell.cellRef
               ? <i className="drag-handle-icon" aria-hidden="true"></i>
@@ -741,9 +757,12 @@ export default class ReactAgenda extends Component {
 
       }.bind(this));
 
+      if (this.cellRefMaps[cell.cellRef] == null)
+        this.cellRefMaps[cell.cellRef] = React.createRef();
+
       return (
 
-        <td ref={cell.cellRef} key={"cell-" + i} className={classSet} style={styles} id={cell.cellRef}>
+        <td ref={this.cellRefMaps[cell.cellRef]} key={"cell-" + i} className={classSet} style={styles} id={cell.cellRef}>
 
           {itemElement}
         </td>
@@ -796,11 +815,16 @@ export default class ReactAgenda extends Component {
         }
       }
 
+      if (this.cellRefMaps[cell.cellRef] == null)
+        this.cellRefMaps[cell.cellRef] = React.createRef();
+      if (this.itemIDRefMaps[cell.item._id] == null)
+        this.itemIDRefMaps[cell.item._id] = React.createRef();
+
       return (
-        <td ref={cell.cellRef} key={"cell-" + i} className={classSet} style={styles} id={cell.cellRef}>
+        <td ref={this.cellRefMaps[cell.cellRef]} key={"cell-" + i} className={classSet} style={styles} id={cell.cellRef}>
 
           {first === cell.cellRef
-            ? <div id={cell.item._id} ref={cell.item._id} className="dragDiv" onDragStart={this.onDragStart} onDragEnd={this.onDragEnd} draggable="true">
+            ? <div id={cell.item._id} ref={this.itemIDRefMaps[cell.item._id]} className="dragDiv" onDragStart={this.onDragStart} onDragEnd={this.onDragEnd} draggable="true">
 
               {/* {first === cell.cellRef && this.props.onChangeEvent
                 ? <i className="drag-handle-icon" aria-hidden="true"></i>
@@ -850,7 +874,7 @@ export default class ReactAgenda extends Component {
           <table>
             <thead>
               <tr>
-                <th ref="column-0" className="agenda__cell --controls">
+                <th ref={this.columnRefMaps['column-0']} className="agenda__cell --controls">
                   
                 </th>
                 {this.getHeaderColumns(this.props.view).map(renderHeaderColumns, this)}
@@ -859,7 +883,7 @@ export default class ReactAgenda extends Component {
           </table>
         </div> : ""}
 
-        <div ref="agendaScrollContainer" className="agenda__table --body" style={{
+        <div ref={this.agendaScrollContainer} className="agenda__table --body" style={{
           position: 'relative'
         }}>
           <table cellSpacing="0" cellPadding="0">
