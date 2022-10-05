@@ -668,7 +668,7 @@ export default class ReactAgenda extends Component {
 
         timeLabel.locale(this.props.locale);
         return (
-          <tr key={"row-" + i} ref={ref} draggable={false} className="agenda__row   --hour-start">
+          <tr key={"row-" + i} ref={this.hourRefMaps[ref]} draggable={false} className="agenda__row   --hour-start">
             <td className={differ <= 0 && differ >= -60
               ? 'disable-select agenda__cell --time-now'
               : 'disable-select agenda__cell --time'} rowSpan={this.props.rowsPerHour}>{timeLabel.format('LT')}

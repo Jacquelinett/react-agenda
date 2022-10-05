@@ -220,7 +220,7 @@ render() {
           <div className="agendCtrls-label-wrapper">
             <div className="agendCtrls-label-inline">
               <label>Event name</label>
-              <input type="text" name="name" autoFocus ref="eventName" className="agendCtrls-event-input" value={this.state.name} onChange={this.handleChange.bind(this)} placeholder="Event Name"/>
+              <input type="text" name="name" autoFocus ref={this.eventName} className="agendCtrls-event-input" value={this.state.name} onChange={this.handleChange.bind(this)} placeholder="Event Name"/>
             </div>
             <div className="agendCtrls-label-inline ">
               <label>Color</label>
